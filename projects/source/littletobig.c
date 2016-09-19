@@ -2,7 +2,7 @@
 #include<stdint.h>
 uint32_t little_to_big(uint32_t data);
 //little endian machine
-int main()
+void main()
 {
 	uint32_t data;
 	printf("Enter a 32 bit data:");

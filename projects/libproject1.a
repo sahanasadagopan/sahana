@@ -1,0 +1,817 @@
+!<arch>
+atoi.c/         1474246512  1000  1000  100664  520       `
+#include<stdio.h>
+#include<stdint.h>
+int32_t my_atoi(int8_t *str);
+int main()
+{
+	char data[100];
+	int32_t res;
+	printf("Enter a string:");
+	scanf("%[^\n]",data);
+	res=my_atoi(data);	
+	if(res==0)
+	{
+		printf("\nInvalid input!letters and special characters except '-' not allowed\n");
+	}
+	else
+	{
+		printf("\nSuccess\n");
+	}		
+}
+
+
+int32_t my_atoi(int8_t *str)
+{
+	if(str!=NULL)
+	{
+		while(*str!='\0')
+		{
+		if(*str>='0' && *str<='9' || *str=='-')
+		{
+			printf("%d",*str);
+		}
+		else return 0;
+		str++;	
+	}
+	}
+	*str=0;
+}
+	
+bigtolittle.c/  1474246522  1000  1000  100664  461       `
+#include<stdio.h>
+#include<stdint.h>
+uint32_t big_to_little(uint32_t data);
+
+int main()
+{
+	uint32_t data;
+	printf("Enter a 32 bit data:");
+	scanf("%x",&data);
+	uint32_t little=big_to_little(data);	
+	printf("little:%x\n",little);
+}
+
+
+uint32_t big_to_little(uint32_t data)
+{
+	uint32_t little;
+	uint8_t *bptr=(uint8_t *)&data;
+	uint8_t *lptr=(uint8_t *)&little;
+	*lptr=*(bptr+3);
+	*(lptr+1)=*(bptr+2);
+	*(lptr+2)=*(bptr+1);
+	*(lptr+3)=*(bptr);
+	return little;
+}
+	
+
+data.c/         1474243606  1000  1000  100664  1406      `
+#include "data.h"
+#include <stdint.h>
+#include<stdio.h>
+int8_t* my_itoa(int8_t *str,int32_t data,int32_t base)
+{
+	int32_t rem;
+	int num=data;
+	int8_t i=0;
+	int8_t beg,end;
+	char temp;
+	if(data<0)
+	{data=-data;}
+	else {data=data;}			
+	while(data!=0)
+	{
+		rem=data%base;
+		if(rem>9)
+		{	
+			*(str+i)=(rem-10)+'a';
+		}
+		else
+		{
+		*(str+i)=rem+'0';
+		}
+		data=data/base;
+		i++;
+	}
+	
+	if(base==10 && num<0)
+	{
+		*(str+i)='-';
+		i++;
+	}
+		
+	//to reverse the string
+	for(beg=0,end=i-1;beg<end;beg++,end--)
+	{
+		temp=*(str+beg);
+		*(str+beg)=*(str+end);
+		*(str+end)=temp;
+	}
+	*(str+i)='\0';
+	i++;
+	return str;
+}
+
+
+int32_t my_atoi(int8_t *str)
+{
+	if(str!=NULL)
+	{
+		while(*str!='\0')
+		{
+		if(*str>='0' && *str<='9' || *str=='-')
+		{
+			printf("%d",*str);
+		}
+		else return 0;
+		str++;	
+	}
+	}
+	*str=0;
+}
+
+
+void dump_memory(uint8_t *start,uint32_t length)
+{
+
+	uint8_t i;
+	printf("\n");
+	for(i=0;i<length;i++)
+	{
+		printf("%x",*(start+i));	
+	}
+	printf("\n");
+}
+
+
+
+uint32_t big_to_little(uint32_t data)
+{
+	uint32_t little;
+	uint8_t *bptr=(uint8_t *)&data;
+	uint8_t *lptr=(uint8_t *)&little;
+	*lptr=*(bptr+3);
+	*(lptr+1)=*(bptr+2);
+	*(lptr+2)=*(bptr+1);
+	*(lptr+3)=*(bptr);
+	return little;
+}
+	
+
+
+
+uint32_t little_to_big(uint32_t data)
+{
+	uint32_t big;
+	uint8_t *lptr=(uint8_t *)&data;
+	uint8_t *bptr=(uint8_t *)&big;
+	*bptr=*(lptr+3);
+	*(bptr+1)=*(lptr+2);
+	*(bptr+2)=*(lptr+1);
+	*(bptr+3)=*(lptr);
+	return big;
+}
+	
+dump_mem.c/     1474246452  1000  1000  100664  533       `
+#include<stdio.h>
+#include<stdint.h>
+void dump_memory(uint8_t *start,uint32_t length);
+int main()
+{
+	uint8_t i;
+	uint32_t length=0;
+	char data[100];
+	printf("\nEnter the data:");
+	scanf("%[^\n]",data);
+	uint8_t *lptr=(uint8_t *)data;
+	while(*lptr!='\0')
+	{
+		length++;
+		lptr++;
+	}	
+	*lptr=0;
+	printf("\nThe length of the entered data:%u",length);
+	dump_memory(data,length);	
+	
+}
+void dump_memory(uint8_t *start,uint32_t length)
+{
+
+	uint8_t i;
+	printf("\n");
+	for(i=0;i<length;i++)
+	{
+		printf("%x",*(start+i));	
+	}
+	printf("\n");
+}
+
+hw1.c/          1473878640  1000  1000  100664  440       `
+#include<stdio.h>
+#include "hw1.h"
+char reverse_string(char* str, int length)
+{
+int i;
+char arr[100];
+int result;
+printf("elements\n");
+scanf("%[^\t\n]s",arr);
+printf("Enter the length of the string");
+scanf("%d",&length);
+
+result = reverse(arr,length);
+if(result == 1)
+{
+printf("the length entered by the user is negative");
+}
+else
+{
+printf("\n The reverse order\n");
+
+for (i=0;i<=length;i++)
+{
+printf(" %c\n",arr[i]);
+}
+}
+return(1);
+}
+
+
+
+itoa.c/         1474246499  1000  1000  100664  867       `
+#include<stdio.h>
+#include<stdint.h>
+int8_t* my_itoa(int8_t *str,int32_t data,int32_t base);
+int main()
+{
+	int32_t data,base;
+	char oput[100];
+	printf("\nEnter the data:");
+	scanf("%d",&data);
+	printf("Enter the base required:");
+	scanf("%d",&base);
+	printf("base %d:%s\n",base,my_itoa(oput,data,base));
+}
+
+int8_t* my_itoa(int8_t *str,int32_t data,int32_t base)
+{
+	int32_t rem;
+	int num=data;
+	int8_t i=0;
+	int8_t beg,end;
+	char temp;
+	if(data<0)
+	{
+	data=-data;	
+	}
+	else {data=data;}		
+	while(data!=0)
+	{
+		rem=data%base;
+		if(rem>9)
+		{	
+			*(str+i)=(rem-10)+'a';
+		}
+		else
+		{
+		*(str+i)=rem+'0';
+		}
+		data=data/base;
+		i++;
+	}
+	
+	if(base==10 && num<0)
+	{
+		*(str+i)='-';
+		i++;
+	}
+		
+	//to reverse the string
+	for(beg=0,end=i-1;beg<end;beg++,end--)
+	{
+		temp=*(str+beg);
+		*(str+beg)=*(str+end);
+		*(str+end)=temp;
+	}
+	
+	*(str+i)='\0';
+	i++;
+	return str;
+}
+
+	
+
+littletobig.c/  1474246537  1000  1000  100664  612       `
+#include<stdio.h>
+#include<stdint.h>
+uint32_t little_to_big(uint32_t data);
+//little endian machine
+int main()
+{
+	uint32_t data;
+	printf("Enter a 32 bit data:");
+	scanf("%x",&data);
+	uint32_t big;
+	uint32_t testdata=00000001;
+	uint8_t *tstptr=(uint8_t *)&testdata;
+	if(*(tstptr)==1)
+	{
+		big=little_to_big(data);	
+		printf("1.big:%x\n",big);
+	}
+	else
+	{
+		printf("2.big:%x\n",data);
+	}
+		
+}
+
+
+uint32_t little_to_big(uint32_t data)
+{
+	uint32_t big;
+	uint8_t *lptr=(uint8_t *)&data;
+	uint8_t *bptr=(uint8_t *)&big;
+	*bptr=*(lptr+3);
+	*(bptr+1)=*(lptr+2);
+	*(bptr+2)=*(lptr+1);
+	*(bptr+3)=*(lptr);
+	return big;
+}
+	
+main.c/         1474238450  1000  1000  100664  185       `
+//main() to execute project_1_report()
+
+
+#include<stdio.h>
+#include<stdint.h>
+#include "project_1.h"
+int main()
+{
+   project_1_report(); //call project_1_report() in project_1.c file
+}
+
+main1.c/        1473818934  1000  1000  100664  623       `
+#include<stdio.h>
+#include"hw1.h"
+char reverse(char*str,int length)
+{
+char temp;
+int len;
+if(length<=0)
+{
+return (1);
+}
+else
+{
+
+len = length;
+while(len/2)
+{
+temp=*str;
+*str=*(str + len);
+*(str + len)=temp;
+str++;
+len = len-2;
+}
+return (0);
+}
+}
+
+int main()
+{
+int i,length;
+char arr[100];
+int result;
+printf("elements\n");
+scanf("%[^\t\n]s",arr);
+printf("Enter the length of the string");
+scanf("%d",&length);
+
+result = reverse(arr,length);
+if(result == 1) 
+{
+printf("the length entered by the user is negative");
+}
+else
+{
+printf("\n The reverse order\n");
+
+for (i=0;i<=length;i++)
+{
+printf(" %c\n",arr[i]);
+}
+}
+return(1);
+}
+
+maindata.c/     1474246309  1000  1000  100664  1544      `
+#include<stdio.h>
+#include<stdint.h>
+#include "data.h"
+int main()
+{
+        
+        printf("ASCII to Integer Conversion and dump memory() testing\n");
+        
+        
+	char data[100];
+	int32_t res;
+	printf("Enter a string for ASCII to integer conversion and dump memory():");
+	scanf("%[^\n]",data);
+	res=my_atoi(data);	
+	if(res==0)
+	{
+		printf("\nInvalid input!letters and special characters except '-' not allowed for ASCII to Integer conversion\n");
+	}
+	else
+	{
+		printf("\nSuccess\n");
+	}		
+	uint32_t length=0;
+	uint8_t *lptr=(uint8_t *)data;
+	while(*lptr!='\0')
+	{
+		length++;
+		lptr++;
+	}	
+	*lptr=0;
+	dump_memory(data,length);	
+	
+
+        printf("\nEndianess Testing\n");
+
+
+        uint32_t data_endian;
+        printf("Enter a 32 bit data for endianness:");
+        scanf("%x",&data_endian);
+        uint32_t big,little;
+        uint32_t testdata=00000001;
+        uint8_t *tstptr=(uint8_t *)&testdata;
+        if(*(tstptr)==1)
+        {
+	        big=little_to_big(data_endian);	
+        	printf("big endian format of data:%x\n",big);	
+        }
+
+        else
+        {
+                little=big_to_little(data_endian);
+                printf("little endian format of data:%x\n",little);	
+        }
+   
+        printf("Integer to ASCII Conversion and dump memory() testing\n");
+	
+	
+	int32_t data_itoa,base;
+	char output[100];
+	printf("\nEnter the data to convert from integer to ASCII:");
+	scanf("%d",&data_itoa);
+	printf("Enter the base required:");
+	scanf("%d",&base);
+	printf("base %d:%s\n",base,my_itoa(output,data_itoa,base));
+}
+memory.c/       1474234653  1000  1000  100664  885       `
+#include "memory.h"
+#include <stdint.h>
+#include<stdio.h>
+int8_t my_memmove(uint8_t *src,uint8_t *dst,uint32_t length)
+{	
+	if(src!=NULL && dst!=NULL)
+	{
+		while(src<src+length)
+		{
+			if(dst>src && dst<src+length)
+			{
+				dst=dst+length;
+				src=src+length;
+				*dst=*src+length;
+				dst--;
+				src--;
+			}
+			else
+			{
+				*dst=*src;
+				src++;
+				dst++;
+				length--;
+			}
+		}
+	return 1;
+	}
+	else return 0;
+	
+	
+}
+
+	
+int8_t my_memzero(uint8_t *src,uint32_t length)
+{		
+	if(src!=NULL)
+	{	
+		while(src<src+length)
+		{
+			*src=0;
+			src++;	
+			length--;							
+		}
+	*src=0;	
+	return 1;
+	}
+	else 
+	{
+		*src=0;		
+		return 0;
+	}
+}
+
+
+int8_t my_reverse(uint8_t *src,uint32_t length)
+{
+	uint8_t *last=src+length;;
+	uint8_t temp;
+
+	if(src!=NULL)
+	{	
+		while(src<last)
+		{
+			temp=*src;
+			*src=*last;
+			*last=temp;
+			src++;
+			last--;
+		}
+	return 1;
+	}
+	else 
+	{
+		*src=0;
+		return 0;
+	}
+}
+
+memzero.c/      1474234644  1000  1000  100664  873       `
+#include<stdio.h>
+#include<stdint.h>
+int8_t my_memzero(uint8_t *src,uint32_t length);
+void main()
+{
+	uint8_t i;
+	int8_t a;
+	uint32_t length=0;
+	char data[100];
+	uint8_t *lptr=(uint8_t *)data;
+	printf("\nEnter the data:");
+	scanf("%[^\n]",data);
+	while(*lptr!='\0')
+	{
+		length++;
+		lptr++;
+	}	
+	*lptr=0;
+	//uint8_t *dptr=(uint8_t *)data;
+	printf("The length of the string is:%u\n",length);
+	a=my_memzero(data,length);
+	if(a==1)
+	{
+	
+		printf("The data at the destination is:");	
+		/*while(*dptr!='\0')
+		{
+			printf("%c",*dptr);
+			dptr++;
+		}*/
+		for(i=0;i<length;i++)
+		{
+			printf("%d",data[i]);
+		}
+	}
+	else
+	{
+		printf("Move failed");
+	}
+	printf("\n");
+}
+
+
+
+	
+int8_t my_memzero(uint8_t *src,uint32_t length)
+{		
+	if(src!=NULL)
+	{	
+		while(src<src+length)
+		{
+			*src=0;
+			src++;	
+			length--;							
+		}
+	*src=0;	
+	return 1;
+	}
+	else 
+	{
+		*src=0;		
+		return 0;
+	}
+}
+
+mymemmove.c/    1474234639  1000  1000  100664  1014      `
+#include<stdio.h>
+#include<stdint.h>
+int8_t my_memmove(uint8_t *src,uint8_t *dst,uint32_t length);
+void main()
+{
+	uint8_t i;
+	int8_t a;
+	uint32_t length=0;
+	char data[100],dstdata[100];
+	uint8_t *lptr=(uint8_t *)data;
+	printf("\nEnter the data:");
+	scanf("%[^\n]",data);
+	while(*lptr!='\0')
+	{
+		length++;
+		lptr++;
+	}	
+	*lptr=0;
+	uint8_t *dptr=(uint8_t *)dstdata;
+	printf("The length of the string is:%u\n",length);
+	a=my_memmove(data,dstdata,length);
+	if(a==1)
+	{
+	
+		printf("The data at the destination is:");	
+		while(*dptr!='\0')
+		{
+			printf("%c",*dptr);
+			dptr++;
+		}
+	}
+	else
+	{
+		printf("Move failed");
+	}
+	printf("\n");
+}
+	
+int8_t my_memmove(uint8_t *src,uint8_t *dst,uint32_t length)
+{	
+	if(src!=NULL && dst!=NULL)
+	{	while(src<src+length)
+		{
+			if(dst>src && dst<src+length)
+			{
+				dst=dst+length;
+				src=src+length;
+				*dst=*src+length;
+				dst--;
+				src--;
+			}
+			else
+			{
+				*dst=*src;
+				src++;
+				dst++;
+				length--;
+			}
+		}
+	*src=0;
+	*dst=0;
+	return 1;
+	}
+	else return 0;
+	
+	
+}
+
+
+
+project_1.c/    1474234634  1000  1000  100664  1097      `
+/* Variables list:
+   arr[32]: An array of 32 bytes(unsigned)
+   i:varaible to access the array using pointers
+   aptr_1: pointer to arr[0]
+   aptr_2:pointer to arr[8]
+   aptr_3:pointer to arr[16]
+   data:initializing the data 31 and incrementing till 46
+ */
+ 
+ 
+#include<stdio.h>
+#include<stdint.h>
+#include "project_1.h"
+void project_1_report()
+{
+   uint8_t arr[32];	
+   uint8_t i=0;
+   uint8_t *aptr_1=arr;
+   uint8_t *aptr_2=&arr[8];
+   uint8_t *aptr_3=&arr[16];
+   uint8_t data=31;
+   
+   //to enter integers 31 to 46 for first 16 bytes of arr
+   
+   while(i<16)
+   {
+        *(aptr_1+i)=data;
+	printf("%d\n",*(aptr_1+i));
+	data++;
+	i++;
+   }
+   
+   //print the array formed
+   
+   my_memzero(aptr_3,16);
+   printf("\nThe array formed: \n");
+   i=0;
+   while(i<32)
+   {
+        printf("%d\t",*(aptr_1+i));
+	i++;
+   }
+   
+   //print the shuffled array
+   
+   my_memmove(aptr_1,aptr_3,8);
+   int8_t e=my_memmove(aptr_2,aptr_1,16);
+   printf("\nThe final array after shuffling: \n");
+   int8_t m=my_reverse(aptr_1,32);
+   i=0;
+   while(i<32)
+   {
+	printf("%d\t",*(aptr_1+i));
+	i++;
+   }
+}
+
+
+	
+
+
+
+reverse.c/      1474236123  1000  1000  100664  850       `
+#include<stdio.h>
+#include<stdint.h>
+int8_t my_reverse(uint8_t *src,uint32_t length);
+int main()
+{
+	uint8_t i;
+	int8_t a;
+	uint32_t length=0;
+	char data[100];
+	printf("\nEnter the data:");
+	scanf("%[^\n]",data);
+	uint8_t *lptr=(uint8_t *)data;
+	while(*lptr!='\0')
+	{
+		length++;
+		lptr++;
+	}	
+	*lptr=0;
+	printf("\nThe length of the entered data:%u",length);
+	a=my_reverse(data,length);	
+	uint8_t *dptr=(uint8_t *)data;
+	if(a==1)
+	{
+	
+		printf("\nThe reversed data is:");	
+		for(i=0;i<=length;i++)
+		{
+			printf("%c",*(dptr+i));
+		} 
+	}
+	else
+	{
+		printf("Move failed");
+	}
+	printf("\n");
+
+}
+
+int8_t my_reverse(uint8_t *src,uint32_t length)
+{
+	uint8_t *last=src+length;;
+	uint8_t temp;
+
+	if(src!=NULL)
+	{	
+		while(src<last)
+		{
+			temp=*src;
+			*src=*last;
+			*last=temp;
+			src++;
+			last--;
+		}
+	return 1;
+	}
+	else 
+	{
+		*src=0;
+		return 0;
+	}
+}
+	
+

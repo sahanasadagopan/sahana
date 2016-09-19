@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdint.h>
 void dump_memory(uint8_t *start,uint32_t length);
-int main()
+void main()
 {
 	uint8_t i;
 	uint32_t length=0;

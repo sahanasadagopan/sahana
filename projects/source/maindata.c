@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdint.h>
 #include "data.h"
-int main()
+void main()
 {
         
         printf("ASCII to Integer Conversion and dump memory() testing\n");
@@ -11,6 +11,7 @@ int main()
 	int32_t res;
 	printf("Enter a string for ASCII to integer conversion and dump memory():");
 	scanf("%[^\n]",data);
+	printf("\nInteger output\n");
 	res=my_atoi(data);	
 	if(res==0)
 	{
@@ -28,6 +29,7 @@ int main()
 		lptr++;
 	}	
 	*lptr=0;
+	printf("\nDump memory output\n");
 	dump_memory(data,length);	
 	
 

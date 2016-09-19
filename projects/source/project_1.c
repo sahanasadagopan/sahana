@@ -25,7 +25,6 @@ void project_1_report()
    while(i<16)
    {
         *(aptr_1+i)=data;
-	printf("%d\n",*(aptr_1+i));
 	data++;
 	i++;
    }
@@ -53,6 +52,7 @@ void project_1_report()
 	printf("%d\t",*(aptr_1+i));
 	i++;
    }
+   printf("\n");
 }
 
 

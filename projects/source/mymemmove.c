@@ -10,6 +10,7 @@ void main()
 	uint8_t *lptr=(uint8_t *)data;
 	printf("\nEnter the data:");
 	scanf("%[^\n]",data);
+	scanf("%x",&data);
 	while(*lptr!='\0')
 	{
 		length++;

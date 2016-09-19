@@ -1,4 +1,4 @@
-//
+//function declaration
 
 #ifndef _project_H
 #define _project_H

@@ -2,7 +2,7 @@
 #include<stdint.h>
 uint32_t big_to_little(uint32_t data);
 
-int main()
+void main()
 {
 	uint32_t data;
 	printf("Enter a 32 bit data:");

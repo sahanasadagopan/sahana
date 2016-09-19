@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdint.h>
 int32_t my_atoi(int8_t *str);
-int main()
+void main()
 {
 	char data[100];
 	int32_t res;

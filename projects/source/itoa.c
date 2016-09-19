@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdint.h>
 int8_t* my_itoa(int8_t *str,int32_t data,int32_t base);
-int main()
+void main()
 {
 	int32_t data,base;
 	char oput[100];
@@ -11,6 +11,7 @@ int main()
 	scanf("%d",&base);
 	printf("base %d:%s\n",base,my_itoa(oput,data,base));
 }
+
 
 int8_t* my_itoa(int8_t *str,int32_t data,int32_t base)
 {
