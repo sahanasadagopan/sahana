@@ -8,7 +8,7 @@ CFLAGS= -g -Wall -O0 -std=c99 #declaring the flags
 
 CPROG= main.c memory.c project_1.c memzero.c mymemmove.c reverse.c bigtolittle.c atoi.c data.c dump_mem.c itoa.c littletobig.c # declaring all the C files
 
-COBJ= data.c maindata.c project_1.c main.c memory.c# Files for which object files are to be generated
+COBJ= data.c project_1.c main.c memory.c# Files for which object files are to be generated
 
 HEAD= hw1.h memory.h project_1.h data.h # files for which header files are present
 
