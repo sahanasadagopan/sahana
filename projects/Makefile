@@ -6,29 +6,28 @@ include source.mk
 CC=gcc  #declaring the compilers
 CFLAGS= -g -Wall -O0 -std=c99 #declaring the flags
 
-CPROG= main.c memory.c project_1.c memzero.c mymemmove.c reverse.c bigtolittle.c atoi.c data.c dump_mem.c itoa.c littletobig.c 
+CPROG= main.c memory.c project_1.c memzero.c mymemmove.c reverse.c bigtolittle.c atoi.c data.c dump_mem.c itoa.c littletobig.c # declaring all the C files
 
-COBJ= data.c maindata.c
+COBJ= data.c maindata.c project_1.c main.c memory.c# Files for which object files are to be generated
 
-HEAD= hw1.h memory.h project_1.h data.h
+HEAD= hw1.h memory.h project_1.h data.h # files for which header files are present
 
-OBJ= main.o memory.o project_1.o data.o 
+OBJ= main.o memory.o project_1.o data.o #files for which object files are to be generated
 
-INCLUDE=./HEADER
+INCLUDE=./HEADER #giving the header path
 
-PREP= main.i memory.i memzero.i mymemmove.i project_1.i reverse.i data.i dump_mem.i bigtolittle.i littletobig.i atoi.i itoa.i
+PREP= main.i memory.i memzero.i mymemmove.i project_1.i reverse.i data.i dump_mem.i bigtolittle.i littletobig.i atoi.i itoa.i #all the preprocessor files
 
 BBB= output root@192.168.7.2:home/ESE/project
 
-ifeq ($(arch),bbb)
+ifeq ($(arch),bbb) # for defining the beagle bone board
 CC=arm-linux-gnueabihf-gcc
-else ifeq ($(arch),frdm)
+else ifeq ($(arch),frdm) # for defining the freedom scale compiler
 CC=arm-none-eabi
-
-else ifeq ($(arch),host)
+else ifeq ($(arch),host)# for taking the native compiler
 CC=gcc
 else 
-CC=gcc
+CC=gcc #defining default compiler 
 endif
 
 #all: %
