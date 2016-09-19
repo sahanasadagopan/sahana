@@ -35,3 +35,6 @@ Target 6:Here the library is build in which all the c files are being copied an 
 		     
 		  
  Phony targets are assigned to each of the targets so that there is no conflict if there are files generated with the same target name.
+For getting the output for the memory and data files the variable in Cobj variable should be changed with alll the main files are given together then a error of overaping main function or defining main twice comes.
+
+The same makefile can be accesed by cloning it to beagle bone and compiling it natively on beagle bone.
