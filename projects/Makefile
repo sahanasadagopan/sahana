@@ -5,17 +5,26 @@
 include source.mk
 CC=gcc  #declaring the compilers
 CFLAGS= -g -Wall -O0 -std=c99 #declaring the flags
-CPROG= main.c memory.c project_1.c
-HEAD= hw1.h memory.h project_1.h
-OBJ= main.o memory.o project_1.o memzero.o mymemmove.o reverse.o
+
+CPROG= main.c memory.c project_1.c memzero.c mymemmove.c reverse.c bigtolittle.c atoi.c data.c dump_mem.c itoa.c littletobig.c 
+
+COBJ= data.c maindata.c
+
+HEAD= hw1.h memory.h project_1.h data.h
+
+OBJ= main.o memory.o project_1.o data.o 
+
 INCLUDE=./HEADER
-PREP= main.i memory.i memzero.i mymemmove.i project_1.i reverse.i
+
+PREP= main.i memory.i memzero.i mymemmove.i project_1.i reverse.i data.i dump_mem.i bigtolittle.i littletobig.i atoi.i itoa.i
+
 BBB= output root@192.168.7.2:home/ESE/project
 
 ifeq ($(arch),bbb)
 CC=arm-linux-gnueabihf-gcc
 else ifeq ($(arch),frdm)
 CC=arm-none-eabi
+
 else ifeq ($(arch),host)
 CC=gcc
 else 
@@ -43,16 +52,38 @@ main.s: main.c
 .PHONY: memory.s
 memory.s: memory.c 
 	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
-.PHONY: mymemmove
+.PHONY: mymemmove.s
 mymemmove.s: mymemmove.c
-	$(CC) $(CFLAG) -S $^
-.PHONY: memzero
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: memzero.s
 memzero.s: memzero.c
-	$(CC) $(CFLAG) -S $^
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
 
-.PHONY: reverse
+.PHONY: reverse.s
 reverse.s: reverse.c
-	$(CC) $(CFLAG) -S $^
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: data.s
+data.s: data.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: maindata.s
+maindata.s: maindata.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: itoa.s
+itoa.s: itoa.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: atoi.s
+atoi.s: atoi.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: dump_mem.s
+dump_mem.s: dump_mem.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: littletobig.s
+littletobig.s: litlletobig.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+.PHONY: bigtolittle.s
+bigtolittle.s: bigtolittle.c
+	$(CC) $(CFLAG) -I $(INCLUDE) -S $^
+
 .PHONY: %.o
 %.o: %.c
 	$(CC) $(CFLAGS) -I $(INCLUDE) $^ -c
@@ -61,7 +92,7 @@ reverse.s: reverse.c
 compile-all: $(OBJ)
 	$(CC) $(CFLAGS) -I $(INCLUDE) $^ -c
 
-Build: $(CPROG)
+Build: $(COBJ)
 	$(CC) $(CFLAGS) $^ -I $(INCLUDE) -o output
 	$(CC) $(CFLAGS) -I $(INCLUDE) -M ./source/*.c > output.dep
 	size -d output 
@@ -75,5 +106,5 @@ Build-lib: $(CPROG)
 	tar -cvf libproject1.tar ./source/*.c
 	
 clear:
-	rm -rf *.i *.o *.s main compail-all Build Build-lib libproject1.a libproject1.tar Mapfile
+	rm -rf *.i *.o *.s main compail-all Build Build-lib libproject1.a libproject1.tar Mapfile output
 
