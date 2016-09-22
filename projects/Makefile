@@ -23,7 +23,7 @@ BBB= output root@192.168.7.2:home/ESE/project
 ifeq ($(arch),bbb) # for defining the beagle bone board
 CC=arm-linux-gnueabihf-gcc
 else ifeq ($(arch),frdm) # for defining the freedom scale compiler
-CC=arm-none-eabi
+CC=arm-none-eabi-gcc
 else ifeq ($(arch),host)# for taking the native compiler
 CC=gcc
 else 
