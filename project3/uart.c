@@ -1,13 +1,15 @@
 /*
  * uart.c
  *
- *  Created on: Nov 1, 2016
- *      Author: sasa2453
+ *  Created on: Oct 10, 2016
+ *      Author: sahan
  */
-
-
-
-
+/*
+ * uart.c
+ *
+ *  Created on: Oct 7, 2016
+ *      Author: sahan
+ */
 #include "MKL25z4.h"
 //#include "core_cm4.h"
 #include "core_cmFunc.h"
@@ -30,31 +32,6 @@ int i,j=0;
 //putchar(1);
 
 
-
-/*void UART0_IRQHandler(){
-	if (UART0_S1 & UART0_S1_RDRF_MASK) {
-	d[j]=UART0_D;
-	j++;
-	}
-//putchar(s);//d = UART0_D ;
-//__disable_irq();
-/*while(1)
-{
-if(UART0_S1==0xC0)
-{
-UART0_D = 'a';
-}
-}*/
-//}
-/*void uart_write_byte(char c){
-while(1)
-{
-if(UART0_S1==0xC0)
-{
-UART0_D = c;
-}
-}
-}*/
 void uart0_init (int sysclk, int baud)
 {
     uint32_t sbr_val, uart0clk;
@@ -90,11 +67,15 @@ void uart0_init (int sysclk, int baud)
   UART0_BDL =(baud_divisor & UART_BDL_SBR_MASK);
         // Configuration for Step 6
         // Enable Interrupts for TX/RX
-     //  UART0_C2 |= UART_C2_RIE_MASK| UART_C2_TIE_MASK;
-  //UART0_C2|=UART_C2_RIE_MASK;
+       UART0_C2 |= UART_C2_RIE_MASK| UART_C2_TIE_MASK;
         UART0_C2 |= UART0_C2_TE_MASK|UART0_C2_RE_MASK;
         //UART0_S1|=0xC0;
-     __enable_irq();
-     NVIC_EnableIRQ(UART0_IRQn);
+       __enable_irq();
+       NVIC_EnableIRQ(UART0_IRQn);
 }
-//}
+
+
+
+
+
+
