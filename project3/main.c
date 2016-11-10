@@ -1,8 +1,31 @@
 /*
- * main.c
+ * Copyright (c) 2015, Freescale Semiconductor, Inc.
+ * All rights reserved.
  *
- *  Created on: Nov 4, 2016
- *      Author: sahan
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of Freescale Semiconductor, Inc. nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "spi.h"
 #include "nrf24L0+.h"
@@ -15,37 +38,67 @@ void main()
 
 		//UART0_init();
 		spi0_init();
+	//	NRF_CS_DISABLE();
 	   // send_char('A');
 //	spi_send('a');
 while(1){
+	uint8_t k[32]={0x35, 0x35, 0x35, 0x35};
+	uint8_t *k_ptr;
+	k_ptr=k;
+	nrf_transmit_data(k_ptr);
 	nrf_config_write();
 	nrf_config_read();
+	//nrf_flush_tx();
+	//nrf_transmit_data();
 	proffoz_nrf_status_read();
+	//TEST_HIGH;
 }
 }
 
 void nrf_config(){
 	NORDIC_CONFIG_MASK_PWR_UP(1);
+
 }
 
 void nrf_write_register(unsigned char address){
      spi_send(0x00|NORDIC_RX_ADDR_P0_BASE);
 }
-
+void nrf_write_tx_address(unsigned char address){
+	 spi_send(0X00|NORDIC_W_TX_PAYLOAD);
+}
 
 void nrf_read_register(unsigned char address){
 	spi_send(0x00|address);
 
 }
 
-void nrf_transmit_data(const void *buf, uint8_t len){
+//void nrf_transmit_data(const void *buf, uint8_t len){
 
+//}
+void nrf_flush_tx(){
+	TEST_LOW;
+	spi_send(0xE2);
+	TEST_HIGH;
 }
-void flush_tx(){
+void nrf_transmit_data(uint8_t *write){
+	uint8_t ch=0;
+	uint8_t l=32;
+	//NRF_CS_DISABLE();
+	NRF_CS_ENABLE();
 
+	WAIT_SPTEF;
+	SPI0_D=NORDIC_W_TX_PAYLOAD;
+	WAIT_SPRF;
+	ch=SPI0_D;
+while (l>0)
+{
+	WAIT_SPTEF;
+	SPI0_D= *write;
+	WAIT_SPRF;
+	ch= SPI0_D;
+	l--;
+	write++;
 }
-void nrf_set_tx_address(){
-
 }
 //void main(){
 
@@ -81,7 +134,7 @@ void nrf_config_read() //read from the config register
      while(!(SPI0_S & SPI_S_SPTEF_MASK)){
      }
      if (c==0x03){
-    	 red();
+    	 yellow();
      }
 }
 uint8_t proffoz_nrf_status_read() {
@@ -104,8 +157,3 @@ NRF_CS_DISABLE(); //creating edge for analyser triggering
 
        return(rx_ret);
 }
-
-
-
-
-

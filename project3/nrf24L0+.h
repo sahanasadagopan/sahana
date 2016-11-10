@@ -1,12 +1,13 @@
 /*
  * nrf24L0+.h
  *
- *  Created on: Nov 2, 2016
- *      Author: sahan
+ *  Created on: Nov 9, 2016
+ *      Author: sasa2453
  */
 
 #ifndef SOURCES_NRF24L0__H_
 #define SOURCES_NRF24L0__H_
+
 #include <stdio.h>
 #include <stdint.h>
 #define __IO volatile
@@ -205,13 +206,15 @@ void nrf_config();
 void nrf_read_register(unsigned char address);
 void nrf_write_register(unsigned char address);
 void nrf_write_multiple(uint8_t register1, uint8_t *loc, uint8_t size);
-void nrf_flush_tx_fifo();
+void nrf_flush_tx();
 void nrf_set_tx_address();
+void nrf_transmit_data(uint8_t *write);
 void CE_HIGH();
 void CE_LOW();
 void nrf_config_read();
 void nrf_config_write();
 uint8_t proffoz_nrf_status_read();
+
 
 
 
