@@ -70,6 +70,9 @@
 
 #define SENSITIVITY_2G		  4096
 
-
+void clock_Init();
+void Accelerometer_Init();
+void Calibrate (void);
+void PORTA_IRQHandler();
 
 #endif /* SOURCES_ACC_H_ */

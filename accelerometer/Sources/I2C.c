@@ -1,7 +1,7 @@
 #include "MKL25Z4.h"
 #include "I2C.h"
-
-void I2C_WriteRegister(unsigned char SlaveAddress, unsigned char RegisterAddress, char u8Data)
+int i;
+void I2C_WriteRegister(unsigned char SlaveAddress, unsigned char RegisterAddress, char Data)
 {
 	I2C_Start();
 	I2C0_D = SlaveAddress << 1;									/* Send I2C device address with W/R bit = 0 */
@@ -10,11 +10,11 @@ void I2C_WriteRegister(unsigned char SlaveAddress, unsigned char RegisterAddress
 	I2C0_D = RegisterAddress;										/* Send register address */
 	I2C_Wait();
 
-	I2C0_D = u8Data;												/* Send the data */
+	I2C0_D = Data;												/* Send the data */
 	I2C_Wait();
 
 	I2C_Stop();
-
+	for(i=0;i<50;i++);
    // Pause(50);
 }
 
@@ -41,6 +41,7 @@ unsigned char I2C_ReadRegister(unsigned char SlaveAddress, unsigned char Registe
 	I2C_Wait();
 	I2C_Stop();
 	result = I2C0_D;
+	for(i=0;i<50;i++);
 	//Pause(50);
 	return result;
 }
@@ -80,6 +81,7 @@ void I2C_ReadMultiRegisters(unsigned char SlaveAddress, unsigned char RegisterAd
 	I2C_Wait();
 	I2C_Stop();
 	*r = I2C0_D;
+	for(i=0;i<20;i++);
 	//Pause(50);
 }
 

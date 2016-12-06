@@ -7,38 +7,36 @@
 #include "MKL25Z4.h"
 #include "acc.h"
 #include "I2C.h"
+#include "uart.h"
+#include "log1.h"
+#include "string.h"
 unsigned char AccData[6];
 short Xout_14_bit, Yout_14_bit, Zout_14_bit;
-float Xout_g, Yout_g, Zout_g;
-char DataReady;
+int Xout_g, Yout_g, Zout_g;
+int x;
+char Data;
 char Xoffset, Yoffset, Zoffset;
 
-/******************************************************************************
-* Functions
-******************************************************************************/
-
-void MCU_Init(void);
+/*void MCU_Init(void);
 void Accelerometer_Init (void);
-void Calibrate(void);
+void Calibrate(void);*/
 
-/******************************************************************************
-* Main
-******************************************************************************/
 
 int main (void)
 {
-	DataReady = 0;
-	MCU_Init();
-  	Accelerometer_Init();
+	int i;
+	Data = 0;
+    clock_Init();
+	I2C0_F  = 0x14; 						// SDA hold time = 2.125us, SCL start hold time = 4.25us, SCL stop hold time = 5.125us *
+	I2C0_C1 = I2C_C1_IICEN_MASK;    		// Enable I2C0 module
+	Accelerometer_Init();
   	Calibrate();
 
-  	while(1)
-    {
-		if (DataReady)		// new set of data ready
-		{
-			DataReady = 0;
+		//if (Data)		// new set of data ready
+		//{
+			Data = 0;
 
-			I2C_ReadMultiRegisters(MMA845x_I2C_ADDRESS, OUT_X_MSB_REG, 6, AccData);		// Read data output registers 0x01-0x06
+			I2C_ReadMultiRegisters(MMA845x_I2C_ADDRESS, OUT_Y_MSB_REG, 6, AccData);		// Read data output registers 0x01-0x06
 
 			Xout_14_bit = ((AccData[0]<<8 | AccData[1])) >> 2;		// Compute 14-bit X-axis output value
 			Yout_14_bit = ((AccData[2]<<8 | AccData[3])) >> 2;		// Compute 14-bit Y-axis output value
@@ -47,23 +45,26 @@ int main (void)
 			Xout_g = (Xout_14_bit) / SENSITIVITY_2G;		// Compute X-axis output value in g's
 			Yout_g = (Yout_14_bit) / SENSITIVITY_2G;		// Compute Y-axis output value in g's
 			Zout_g = (Zout_14_bit) / SENSITIVITY_2G;		// Compute Z-axis output value in g's
-		}
-	}
+//for(i=0;i<10;i++);
+
+		//}
+			int j=4;
+		char str[]="Coordinates:";
+							  			int l=strlen(str);
+							  			LOG_1(str,l,Xout_g,32);
+							  			LOG_1(str,l,Yout_g,32);
+							  			LOG_1(str,l,Zout_g,32);
+
 }
 
-/******************************************************************************
-* MCU initialization function
-******************************************************************************/
 
-void MCU_Init(void)
+void clock_Init(void)
 {
 	//I2C0 module initialization
 	SIM_SCGC4 |= SIM_SCGC4_I2C0_MASK;		// Turn on clock to I2C0 module
 	SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK;		// Turn on clock to Port E module
 	PORTE_PCR24 = PORT_PCR_MUX(5);			// PTE24 pin is I2C0 SCL line
 	PORTE_PCR25 = PORT_PCR_MUX(5);			// PTE25 pin is I2C0 SDA line
-	I2C0_F  = 0x14; 						// SDA hold time = 2.125us, SCL start hold time = 4.25us, SCL stop hold time = 5.125us *
-	I2C0_C1 = I2C_C1_IICEN_MASK;    		// Enable I2C0 module
 
 	//Configure the PTA14 pin (connected to the INT1 of the MMA8451Q) for falling edge interrupts
 	SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;		// Turn on clock to Port A module
@@ -76,9 +77,6 @@ void MCU_Init(void)
 	NVIC_ISER |= 1 << ((INT_PORTA - 16)%32);
 }
 
-/******************************************************************************
-* Accelerometer initialization function
-******************************************************************************/
 
 void Accelerometer_Init (void)
 {
@@ -86,7 +84,7 @@ void Accelerometer_Init (void)
 
 	I2C_WriteRegister(MMA845x_I2C_ADDRESS, CTRL_REG2, 0x40);		// Reset all registers to POR values
 
-	do		// Wait for the RST bit to clear
+	 do		// Wait for the RST bit to clear
 	{
 		reg_val = I2C_ReadRegister(MMA845x_I2C_ADDRESS, CTRL_REG2) & 0x40;
 	} 	while (reg_val);
@@ -95,10 +93,6 @@ void Accelerometer_Init (void)
 	I2C_WriteRegister(MMA845x_I2C_ADDRESS, CTRL_REG2, 0x02);		// High Resolution mode
 	I2C_WriteRegister(MMA845x_I2C_ADDRESS, CTRL_REG1, 0x3D);	// ODR = 1.56Hz, Reduced noise, Active mode
 }
-
-/******************************************************************************
-* Simple offset calibration
-******************************************************************************/
 
 void Calibrate (void)
 {
@@ -129,14 +123,10 @@ void Calibrate (void)
 	I2C_WriteRegister(MMA845x_I2C_ADDRESS, CTRL_REG1, 0x3D);		// ODR = 1.56Hz, Reduced noise, Active mode
 }
 
-/******************************************************************************
-* PORT A Interrupt handler
-******************************************************************************/
-
 void PORTA_IRQHandler()
 {
 	PORTA_PCR14 |= PORT_PCR_ISF_MASK;			// Clear the interrupt flag
-	DataReady = 1;
+	Data = 1;
 }
 
 
