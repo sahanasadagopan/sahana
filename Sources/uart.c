@@ -102,12 +102,3 @@ void uart0_init (int sysclk, int baud)
 //}
 
 
-
-
-
-
-
-
-
-
-

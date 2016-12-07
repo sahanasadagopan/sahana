@@ -12,8 +12,5 @@
 void LOG(char *s,int l);
 void LOG1(char *p,int l,int param,int data_type_size);
 int8_t* my_itoa(int8_t *str,int32_t data,int32_t base);
-
-
-
-
+void LOG3(int s,int l);
 #endif /* SOURCES_LOG_H_ */

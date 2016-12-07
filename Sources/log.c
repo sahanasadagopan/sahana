@@ -28,6 +28,23 @@ void LOG(char *s,int l)
 		}
 		i=0;
 }
+
+void LOG3(int s,int l)
+{
+	char par[1];
+	my_itoa(par,s,10);
+	 int i = 0;
+	int j=0;
+	uart0_init (SystemCoreClock,38400);
+		while(!(UART0->S1 & UART_S1_TDRE_MASK) && !(UART0->S1 &UART_S1_TC_MASK));
+		//while(i<l)
+		//{
+		UART0_D=*par;
+		//i++;
+		for(int k=0;k<700;k++);
+		//}
+		i=0;
+}
 void LOG1(char *p,int l,int param,int data_type_size)
 {
 	//uart0_init(SystemCoreClock,38400);
@@ -49,10 +66,14 @@ int8_t* my_itoa(int8_t *str,int32_t data,int32_t base)
    {
       data=-data; //if data is negative, make it positive and execute the code
    }
-   else
+   else if(data==0)
    {
-      data=data;
+	   *(str+i)='0';
    }
+   else
+      {
+         data=data;
+      }
    while(data!=0)
    {
       rem=data%base;
@@ -97,7 +118,6 @@ j++;
 }*/
 
 //}
-
 
 
 
